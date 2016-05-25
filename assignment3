@@ -4,11 +4,10 @@ def read_in_data(file_name,separator):
     file_ = open(file_name, "r")#just for reading
 
     data = []    
-    for i, line in enumerate(file_):
+    for line in file_:
         line = line.strip('\n')
         split_up =  line.split(separator) 
-        print line.index
-        if i == 1:
+        if len(params) == 0:
             params.append(split_up)
         else:    
             data.append(split_up)
@@ -17,3 +16,4 @@ def read_in_data(file_name,separator):
 
 
 print read_in_data( 'spectTrain.txt', sep)
+print params
