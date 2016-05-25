@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+sep = ','
+params = []
+def read_in_data(file_name,separator):
+    file_ = open(file_name, "r")#just for reading
+
+    data = []    
+    for line in file_:
+        line = line.strip('\n')
+        split_up =  line.split(separator) 
+        if len(params) == 0:
+            params.append(split_up)
+        else:    
+            data.append(split_up)
+    
+    return data
+
+
+print read_in_data( 'spectTrain.txt', sep)
+print params
+
+
+
+def reffinementOperator(data):
+     k = 10 #maxHyppothreesises
+     m = 10 #number of isntances
+     n = 10 #number of binary attributes
+     D = 10 #Size of matrix 
+     F = 1 #Quality fucntion type
+     cnt = 0 #counter for the number of variables we need to be true
+     levelCounter =0 #counter for the conjunctions found per level
+     trueVariablesFound = 0
+ 
+    
+    for(i in range (n))#to go through the whole data representing the iterations
+            
+        for(line in range(m)) #to go through the lines    
+         for(varaible in range(n)) #to go through the varables
+             if(data[line][varable]=1)
+                 Current[n]=1; #keepinhg track of what we foudn so far 
+                 tureVariablesFound ++  #to keep track of the number of variables found 
+                 if(TrueVariablesFound >= cnt)                 
+                     level[i][levelCounter] = Current
+                     reintialzeCurrent(Current,tureVariablesFound)
+
+
+
+def reintialzeCurrent(Current,tureVariablesFound):
+    trueVariableFound = 0
+    
+    for(i in len(Current))
+     Current[i]=0
+     
+     
