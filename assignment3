@@ -1,0 +1,19 @@
+sep = ','
+params = []
+def read_in_data(file_name,separator):
+    file_ = open(file_name, "r")#just for reading
+
+    data = []    
+    for i, line in enumerate(file_):
+        line = line.strip('\n')
+        split_up =  line.split(separator) 
+        print line.index
+        if i == 1:
+            params.append(split_up)
+        else:    
+            data.append(split_up)
+    
+    return data
+
+
+print read_in_data( 'spectTrain.txt', sep)
