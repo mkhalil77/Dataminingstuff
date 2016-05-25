@@ -1,3 +1,6 @@
+
+This is a temporary script file.
+"""
 sep = ','
 params = []
 
@@ -9,24 +12,77 @@ def read_in_data(file_name,separator):
         line = line.strip('\n')
         split_up =  line.split(separator) 
         if len(params) == 0:
-            params.append(split_up)
+            params.append((split_up))
         else:    
             data.append(split_up)
     
     return data
 
 
+
+
+"""
 #print read_in_data( 'spectTrain.txt', sep)
 #print params
+def quality_f(hypo, F):
+    g = len(group)
+    if F == 1:
+        q = (g**.5) *abs(p - p_0)
+    elif F == 2:
+        q = (g/(1 - g))*(p - p_0)**2
+    else:
+        q = g * (2 * p-1) + 1 - p_0    
+    return q
+    
+#m rows, n cols, n+1 label
+def ref_op(data, m, n):
+    hypo = [] #index of attribute for the hypotheses
+        
+        
+    return
+"""
+
+
+
 
 def pseudo_midos(file_name):
-    read_in_data( file_name , sep)
-    m = params[0][0]
-    n = params[0][1]
-    k = params[0][2]
-    F = params[0][3]    
-
-    return 
-
-
-pseudo_midos('spectTrain.txt')
+    D = read_in_data(file_name , sep)
+    m = int(float(params[0][0]))
+    n = int(float(params[0][1]))
+    k = int(float(params[0][2]))
+    F = int(float(params[0][3]))    
+    
+    
+    max_level = []
+    sum_line  = 0
+    
+    
+    
+    
+    #------------------#maximum numberof levels--------------------------------
+    for a_i in range(m):
+        sum_line  = 0        
+        for i in range(n):
+            sum_line = sum_line + float(D[a_i][i])
+            
+        max_level.append(sum_line)
+    
+    n_levels = int(max(max_level))
+    #--------------------------------------------------------------------------    
+    
+    
+    
+    #-----------------#add configuration according to levels-------------------
+    levels = [[] for i in range(n_levels)]  
+    for a_i in range(m):
+        sum_line  = 0        
+        for i in range(n):
+            sum_line = sum_line + float(D[a_i][i])
+            #print sum_line            
+        if sum_line>0:
+            levels[int(sum_line)-1].append(D[a_i])   
+    
+    #--------------------------------------------------------------------------     
+    
+    
+    return len(levels[2][3])
