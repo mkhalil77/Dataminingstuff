@@ -7,8 +7,17 @@ def InsertToDec (dict,Function, Quality):
     return sorted_x
 
 
+def MaxValue(dict):
+    maxi=max(dict.iteritems(), key=operator.itemgetter(1))[0]
+    return maxi
+
+
+
+
+
 print InsertToDec(dict,"Tot",10)
 
+print MaxValue(dict)
 
 
 
