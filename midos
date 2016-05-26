@@ -10,6 +10,8 @@ params = []
 
 
 
+
+
 def InsertToDec (Function, Quality):
     
     dict[Function]=Quality
@@ -74,7 +76,8 @@ def quality_f(hypo, D ,F):
         tot = tot + 1
     
     p_0 = ones/tot
-    g = D_new.count(hypo) #occurences 
+    
+    g = D_new.count(hypo)/tot #occurences 
  
        
     if F == 1:
@@ -88,9 +91,50 @@ def quality_f(hypo, D ,F):
     return q
 
 
-#D = read_in_data('spect.txt' , sep)
 
-#print quality_f(hyp, D,1)
+
+
+def V_abs(hypo, D ,F):
+    
+    hypo = hypo[0:len(hypo)-1]
+    ones = 0.0
+    tot = 0.0
+    D_new = []
+    #calculate p and D_new(to compare with hypotheses)
+    
+    for i in range(len(D)):
+        for j in range(len(D[i])):
+            if j == len(D[i])-1:
+                #print i
+                #print j
+                if D[i][j] == '1':
+                    ones  = ones +1 
+                    #print 'im here'
+                    
+        tot = tot + 1
+        D_new.append(D[i][0:len(D[i])-1])
+    
+    p = ones/tot
+    
+    ones = 0.0
+    tot = 0.0
+    for i in range(len(D_new)):
+        if D_new[i] == hypo:
+            for j in range(len(D[i])):
+                if j == len(D[i])-1:
+                    if D[i][j] == '1':
+                        ones  = ones +1 
+        tot = tot + 1
+    
+    p_0 = ones/tot 
+       
+    V = abs((p_0 - p )/(((p*(1-p)/tot))** 0.5))
+    if V > 2.326348 :
+        V = 'YES'
+    else:
+        V = 'NO'
+    
+    return V 
 
     
 
@@ -143,8 +187,8 @@ def pseudo_midos(file_name):
         for j in range(len(levels[i])):
             i_d = ''.join(levels[i][j])
             
-            quality_hy[i_d] = quality_f(levels[i][j], D ,F)
-    
+            #quality_hy[i_d+' is significant: ' + V_abs(levels[i][j], D ,F)] = quality_f(levels[i][j], D ,F)
+            quality_hy[i_d+' is significant: ' + (V_abs(levels[i][j], D ,F))] = quality_f(levels[i][j], D ,F)
             
     
     #--------------------------------------------------------------------------     
@@ -156,6 +200,14 @@ def pseudo_midos(file_name):
         final_quality.append(quality_hy[i])
     
     
+    f = open(
+        'outputF'+ str(F) + '.txt',
+        'w')
+    for i in range(k):
+        f.newlines
+        f.write(str(final_quality[i]))
+        f.write("\n")
+    f.close()
     return final_quality
         
 
