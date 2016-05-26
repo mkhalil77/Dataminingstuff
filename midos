@@ -125,7 +125,7 @@ def pseudo_midos(file_name):
     
     
     
-    #------------------------#create the refinement operator----------------------------
+    #-------------------#create the refinement operator------------------------
     levels = [[] for i in range(n_levels)]  
     for a_i in range(m):
         sum_line  = 0        
@@ -135,28 +135,28 @@ def pseudo_midos(file_name):
         if sum_line>0:
             levels[int(sum_line)-1].append(D[a_i])   
     
-    #--------------------------------------------------------------------------     
+    #-------------sorting and defnining the best hypotheses--------------------
     
     #hypotheses = [[]]
-    quality_hy = []
+    quality_hy = {}
     for i in range(len(levels)):
         for j in range(len(levels[i])):
-            #InsertToDec (levels[i][j], quality_f(levels[i][j], D ,F))
-            #hypotheses[i][j].append(levels[i][j])
-            #print 'i ' + str(i) + ' j ' + str(j) + '\n '
-            #print levels[i][j]           
-            #levels[i][j]
-            quality_hy.append(quality_f(levels[i][j], D ,F))
-    
+            i_d = ''.join(levels[i][j])
+            
+            quality_hy[i_d] = quality_f(levels[i][j], D ,F)
     
             
     
     #--------------------------------------------------------------------------     
 
+    quality_hy = sorted(quality_hy.items(), key = operator.itemgetter(1),reverse=True)
+    final_quality = []    
+    
+    for i in range(k):
+        final_quality.append(quality_hy[i])
     
     
-    
-    return quality_hy
+    return final_quality
         
 
 print pseudo_midos('spect.txt')
