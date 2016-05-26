@@ -1,0 +1,160 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+import operator
+sep = ','
+params = []
+
+
+
+def InsertToDec (Function, Quality):
+    
+    dict[Function]=Quality
+    sorted_x = sorted(dict.items(), key=operator.itemgetter(1))
+    print 'dictionary'
+    return sorted_x
+
+
+def MaxValue(dict):
+    maxi=max(dict.iteritems(), key=operator.itemgetter(1))[0]
+    return maxi
+ 
+ 
+def read_in_data(file_name,separator):
+    file_ = open(file_name, "r")#just for reading
+
+    data = []    
+    for line in file_:
+        line = line.strip('\n')
+        split_up =  line.split(separator) 
+        if len(params) == 0:
+            params.append((split_up))
+        else:    
+            data.append(split_up)
+    
+    return data
+
+
+
+# quality function
+# quality_f(hypotheses, Data, F)
+def quality_f(hypo, D ,F):
+    
+    hypo = hypo[0:len(hypo)-1]
+    ones = 0.0
+    tot = 0.0
+    D_new = []
+    #calculate p and D_new(to compare with hypotheses)
+    
+    for i in range(len(D)):
+        for j in range(len(D[i])):
+            if j == len(D[i])-1:
+                #print i
+                #print j
+                if D[i][j] == '1':
+                    ones  = ones +1 
+                    #print 'im here'
+                    
+        tot = tot + 1
+        D_new.append(D[i][0:len(D[i])-1])
+    
+    p = ones/tot
+    
+    ones = 0.0
+    tot = 0.0
+    for i in range(len(D_new)):
+        if D_new[i] == hypo:
+            for j in range(len(D[i])):
+                if j == len(D[i])-1:
+                    if D[i][j] == '1':
+                        ones  = ones +1 
+        tot = tot + 1
+    
+    p_0 = ones/tot
+    g = D_new.count(hypo) #occurences 
+ 
+       
+    if F == 1:
+        q = (g**.5) *abs(p - p_0)
+    elif F == 2:
+        q = (g/(1 - g))*(p - p_0)**2
+    else:
+        q = g * (2 * p-1) + 1 - p_0    
+        
+    #return the value q
+    return q
+
+
+#D = read_in_data('spect.txt' , sep)
+
+#print quality_f(hyp, D,1)
+
+    
+
+
+
+
+
+def pseudo_midos(file_name):
+    D = read_in_data(file_name , sep)
+    m = int(float(params[0][0]))
+    n = int(float(params[0][1]))
+    k = int(float(params[0][2]))
+    F = int(float(params[0][3]))    
+    
+
+    max_level  = []
+    sum_line   = 0
+    
+    
+    
+    
+    #------------------#maximum numberof levels--------------------------------
+    for a_i in range(m):
+        sum_line  = 0        
+        for i in range(n):
+            sum_line = sum_line + float(D[a_i][i])
+            
+        max_level.append(sum_line)
+    
+    n_levels = int(max(max_level))
+    #--------------------------------------------------------------------------    
+    
+    
+    
+    #------------------------#create the refinement operator----------------------------
+    levels = [[] for i in range(n_levels)]  
+    for a_i in range(m):
+        sum_line  = 0        
+        for i in range(n):
+            sum_line = sum_line + float(D[a_i][i])
+            #print sum_line            
+        if sum_line>0:
+            levels[int(sum_line)-1].append(D[a_i])   
+    
+    #--------------------------------------------------------------------------     
+    
+    hypotheses = [[0 for i in range(len(levels[0]))] for i in range(len(levels))]
+    quality_hy = [[0 for i in range(len(levels))] for i in range(len(levels[0]))]
+    for i in range(len(levels)):
+        for j in range(len(levels[i])):
+            #InsertToDec (levels[i][j], quality_f(levels[i][j], D ,F))
+            hypotheses[i][j] = levels[i][j]
+            quality_hy[i][j] = quality_f(levels[i][j], D ,F)
+            
+    
+    #--------------------------------------------------------------------------     
+
+    
+    
+    
+    return quality_hy
+        
+
+print pseudo_midos('spect.txt')
+
+
+
