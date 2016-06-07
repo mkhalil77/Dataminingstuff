@@ -1,0 +1,32 @@
+from math import sqrt
+
+# defining sample data
+xCordinates = [1, 2, 3, 4, 5]
+
+yCordinates = [1, 2, 3, 4, 5]
+
+
+#defining new function for the distance
+def new_Distance(x1, y1, x2, y2):
+    distance = (x2 - x1) + (y2 - y1)
+    return distance
+
+#defining euclidain distance
+def euc_distance(x1, y1, x2, y2):
+    distance = sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2))
+    return distance
+
+
+
+
+print xCordinates
+print yCordinates
+
+for i in range(len(xCordinates)):
+    print  xCordinates[i], yCordinates[i]
+
+print euc_distance(0, 0,1, 0)
+
+
+
+
