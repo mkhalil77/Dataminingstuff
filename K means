@@ -42,5 +42,54 @@ data = read_in_data("DataIris.txt",",")
 
 print data[0][0]
 
+#-----------------------------------------------
 
+
+
+def k_nn(info,k,n_instances):
+    #lets define the instances
+    len_i = len(info)
+    mod_s = len_i/(n_instances)    
+    ran_instances = []
+    n_elements = len(info[0])
+    err = 0.0
+    
+    for i in range(0,len_i):
+        if (i)%mod_s == 0:
+            ran_instances.append(info[i])
+    
+    del i
+    
+    #lets calculate knn
+    compare_dist = []
+    for i in range(0,len_i):
+        compare_dist = []        
+        for i1 in range(0,n_instances):
+            compare_dist.append(dist(info[i],ran_instances[i1]))
+        
+        order = order_set(compare_dist)#here is the order of each training instance
+        #print order
+        its_0 = 0             
+        its_1 = 0
+        for ik in range(0,k):
+            get_that = order[ik]
+            if ran_instances[get_that][9] == 1:
+                its_1 = its_1 + 1
+            else :
+                its_0 = its_0 + 1
+        if its_1 >= its_0:
+            info[i].append(1)
+        else:
+            info[i].append(0)
+    
+        #lets calculate error
+        
+        if info[i][n_elements] != info[i][n_elements-1]:
+         #   continue         
+            err = err + 1.0
+            #print err
+        #
+    err = (err / len_i)*100
+
+    return info , err
 
