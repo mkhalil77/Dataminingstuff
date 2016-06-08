@@ -1,5 +1,21 @@
 from math import sqrt
 
+
+#Reading data from file
+
+def read_in_data(file_name, separator):
+    file_ = open(file_name, "r")  # just for reading
+
+    data = []
+    for line in file_:
+        line = line.strip('\n')
+        split_up = line.split(separator)
+        data.append(split_up)
+
+    return data
+
+
+
 # defining sample data
 xCordinates = [1, 2, 3, 4, 5]
 
@@ -19,14 +35,12 @@ def euc_distance(x1, y1, x2, y2):
 
 
 
-print xCordinates
-print yCordinates
 
-for i in range(len(xCordinates)):
-    print  xCordinates[i], yCordinates[i]
+data = read_in_data("DataIris.txt",",")
 
-print euc_distance(0, 0,1, 0)
 
+
+print data[0][0]
 
 
 
