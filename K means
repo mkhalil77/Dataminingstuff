@@ -24,7 +24,7 @@ yCordinates = [1, 2, 3, 4, 5]
 
 #defining new function for the distance
 def new_Distance(x1,x2):#type 1
-    distance = (x2[0] - x1[0]) + (x2[1] - x1[1]) + (x2[2] - x1[2]) + (x2[3] - x1[3]) 
+    distance = abs(x2[0] - x1[0]) + abs(x2[1] - x1[1]) + abs(x2[2] - x1[2]) + abs(x2[3] - x1[3]) 
     return distance
 
 #defining euclidain distance
