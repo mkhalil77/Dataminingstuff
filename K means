@@ -64,7 +64,27 @@ def gaussian_data(n):
         
 
     
+#------------------------------------------------------------------------------
+#Purity function
 
+def purity_function(info, cluster, centers):
+    
+    wi = 0.0
+    for i in range(len(info)):
+        if info[i][4] == 'Iris-setosa':
+            val = 0                
+        elif info[i][4] == 'Iris-versicolor':
+            val = 1
+        elif info[i][4] == 'Iris-virginica':
+            val = 2
+        
+        if val == centers.index(cluster[i][0:4]):
+            wi = wi + 1
+            
+    wi = wi / len(info)      
+    print 'Purity function ' + str(wi)
+    return 
+    
 #------------------------------------------------------------------------------
 #for the results
 def print_cluster(info, cluster,centers):
@@ -73,8 +93,10 @@ def print_cluster(info, cluster,centers):
             print str(info[i][0]) + ' cluster ' + str(centers.index([cluster[i][0]]))
         else:    
             print info[i][4] + ' cluster '+ str(centers.index(cluster[i][0:4]))
-
+            
     return
+    
+
 
 #------------------------------------------------------------------------------
 #Knn algorithm
@@ -146,17 +168,22 @@ def k_nn(info,k,d_type):
             for ii in range(len_atrib-1):
                 centers[an][ii] = str(center_com[an][ii])
     
-    print centers
+    
     print_cluster(info, assigns_1, centers)
+    
+    if len(assigns_1[i]) > 1:
+        purity_function(info, assigns_1,centers)
+    
     print 'total number of steps ' + str(i_general) + '\n'
 
     
     return centers
 
 
-#-----------------------------------------
+
+#------------------------------------------------------------------------------
 #execution of the algorithm, reading file and generate new instances
-#-----------------------------------------
+#-----------------------------------------------------------------------------
 
 #Generate the 200 instances with normal probability distribution
 gaussian_i = gaussian_data(200)
@@ -174,6 +201,7 @@ where:
 #
 """
 res_centers = k_nn(gaussian_i,3,2)
+print '-------- Centers --------'
 print res_centers
 
 
