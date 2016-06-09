@@ -4,7 +4,7 @@ import random
 import math
 import numpy
 
-
+#------------------------------------------------------------------------------
 #Reading data from file
 
 def read_in_data(file_name, separator):
@@ -17,7 +17,7 @@ def read_in_data(file_name, separator):
         data.append(split_up)
 
     return data
-
+#------------------------------------------------------------------------------
 #defining new function for the distance
 def new_Distance(x1,x2):#type 1
     len(x1)
@@ -26,7 +26,7 @@ def new_Distance(x1,x2):#type 1
         distance = distance + abs(float(x2[i]) - float(x1[i]))
     #print distance    
     return distance
-
+#------------------------------------------------------------------------------
 #defining euclidain distance
 def euc_distance(x1,x2): #type 2
     len(x1)
@@ -38,6 +38,7 @@ def euc_distance(x1,x2): #type 2
     return distance
 
 #------------------------------------------------------------------------------
+#defining instances with normal probability distribution
 def gaussian_data(n):
     miu = []
     mu = 0.0
@@ -65,18 +66,18 @@ def gaussian_data(n):
     
 
 #------------------------------------------------------------------------------
+#for the results
 def print_cluster(info, cluster,centers):
     for i in range(len(info)):
-        #print centers.index(cluster[i][0:4])
         if len(cluster[i]) == 1:
             print str(info[i][0]) + ' cluster ' + str(centers.index([cluster[i][0]]))
         else:    
             print info[i][4] + ' cluster '+ str(centers.index(cluster[i][0:4]))
-        #print info[i][4] + ' cluster '
-        #print cluster[i]
+
     return
 
 #------------------------------------------------------------------------------
+#Knn algorithm
 def k_nn(info,k,d_type):
     #lets define the instances
 
@@ -100,11 +101,8 @@ def k_nn(info,k,d_type):
     while ( assigns != assigns_1):
        
         i_general = i_general + 1
-        #print assigns + assigns_1
         assigns = list(assigns_1) # to compare the previous cluster
 
-        #print assigns
-        #print '\n'
         for i in range(len_i):
             for k_i in range(k):
                 if d_type == 1:
@@ -116,9 +114,7 @@ def k_nn(info,k,d_type):
                 if d_1 < d_0:
                     #print 'asignación ' + str(k_i)
                     assigns_1[i] = centers[k_i]
-                    #if i_general == 1:
-                        #print ' -------0'        
-                    #    print assigns_1 [i]
+
                 d_0 = d_1
 
 
@@ -140,7 +136,7 @@ def k_nn(info,k,d_type):
         
         
         
-        for an in range(k):#cálculo por centro (promedios)
+        for an in range(k):#compute centers
             for ii in range(len_atrib-1):
                 if center_quantity[an] != 0:
                     center_com[an][ii] = center_com[an][ii] / center_quantity[an]
@@ -158,6 +154,8 @@ def k_nn(info,k,d_type):
     return centers
 
 
+#-----------------------------------------
+#execution of the algorithm, reading file and generate new instances
 #-----------------------------------------
 
 #Generate the 200 instances with normal probability distribution
