@@ -1,4 +1,3 @@
-
 from math import sqrt
 import random
 import math
@@ -31,9 +30,10 @@ def euc_distance(x1,x2): #type 2
 
 
 #------------------------------------------------------------------------------
-def print_cluster(info, cluster):
+def print_cluster(info, cluster,centers):
     for i in range(len(info)):
-        print info[i][4] + ' cluster '+ str(cluster[i])  
+        #print centers.index(cluster[i][0:4])
+        print info[i][4] + ' cluster '+ str(centers.index(cluster[i][0:4]))
         #print cluster[i]
     return
 
@@ -98,15 +98,17 @@ def k_nn(info,k,d_type):
             centers[an][2] = str(center_com[an][2])
             centers[an][3] = str(center_com[an][3])
 
-    print_cluster(info,assigns)
+    #print_cluster(info, assigns, centers)
 
-    return assigns
+    return centers
 
 
 
 
 data    = read_in_data("DataIris.txt",",")
-cluster = k_nn(data,4,1)
+res_centers = k_nn(data,4,1)
+print res_centers
+
 
 
 
