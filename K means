@@ -1,6 +1,8 @@
+
 from math import sqrt
 import random
 import math
+import numpy
 
 
 #Reading data from file
@@ -18,22 +20,59 @@ def read_in_data(file_name, separator):
 
 #defining new function for the distance
 def new_Distance(x1,x2):#type 1
-    distance = abs(float(x2[0]) - float(x1[0])) + abs(float(x2[1]) - float(x1[1]))  + abs(float(x2[2]) - float(x1[2])) + abs(float(x2[3]) - float(x1[3])) 
+    len(x1)
+    distance = 0.0
+    for i in range(len(x1)):
+        distance = distance + abs(float(x2[i]) - float(x1[i]))
     #print distance    
     return distance
 
 #defining euclidain distance
 def euc_distance(x1,x2): #type 2
-    distance = sqrt(((float(x2[0]) - float(x1[0]))**2) + ((float(x2[1]) - float(x1[1]))**2) + ((float(x2[2]) - float(x1[2]))**2) + ((float(x2[3]) - float(x1[3]))**2))
-    #print distance
+    len(x1)
+    distance = 0.0
+    for i in range(len(x1)):
+        distance = distance + (float(x2[i]) - float(x1[i]))**2
+        
+    distance = sqrt(distance)
     return distance
 
+#------------------------------------------------------------------------------
+def gaussian_data(n):
+    miu = []
+    mu = 0.0
+    sigma = random.uniform(0, 1)
+    instances = []
+    
+    for i in range(4):
+        miu.append(random.uniform(0, 1))
+    
+    for i in range(n):
+        n_mu = int(random.uniform(0, 3.9))
+        mu = miu[n_mu]
+        num = numpy.random.normal(mu,sigma,1)
+        instances.append([num[0],n_mu])
+
+    f = open('gaussian_data.txt','w')
+    for i in range(len(instances)):
+        f.newlines
+        f.write(str(instances[i][0])+','+str(instances[i][1]))
+        f.write("\n")
+    f.close()
+    return instances
+        
+
+    
 
 #------------------------------------------------------------------------------
 def print_cluster(info, cluster,centers):
     for i in range(len(info)):
         #print centers.index(cluster[i][0:4])
-        print info[i][4] + ' cluster '+ str(centers.index(cluster[i][0:4]))
+        if len(cluster[i]) == 1:
+            print str(info[i][0]) + ' cluster ' + str(centers.index([cluster[i][0]]))
+        else:    
+            print info[i][4] + ' cluster '+ str(centers.index(cluster[i][0:4]))
+        #print info[i][4] + ' cluster '
         #print cluster[i]
     return
 
@@ -43,20 +82,29 @@ def k_nn(info,k,d_type):
 
     
     len_i       = len(info)
+    len_atrib   = len(info[0])
     index       = []
     centers     = []    
-    assigns     = [k+1 for i in range(len_i)]
-    assigns_1   = [ 0  for i in range(len_i)] 
-    center_com  = [ [0, 0, 0, 0]  for i in range(k)]
+    assigns     = [[random.uniform(0, len_i)  for j in range(len_atrib)] for i in range(len_i)]
+    assigns_1   = [[0  for j in range(len_atrib)] for i in range(len_i)] 
+    center_com  = [[0  for j in range(len_atrib)]  for i in range(k)]
     d_0  = 10000.0
     d_1  = 0.0
+    i_general = 0
     
     for i in range(k):
         index.append(int(math.floor(random.uniform(0, len_i))))
-        centers.append(info[index[i]][0:4])
-        #print centers[i]
+        centers.append(info[index[i]][0:len_atrib-1])
+
         
-    while (assigns_1 != assigns):
+    while ( assigns != assigns_1):
+       
+        i_general = i_general + 1
+        #print assigns + assigns_1
+        assigns = list(assigns_1) # to compare the previous cluster
+
+        #print assigns
+        #print '\n'
         for i in range(len_i):
             for k_i in range(k):
                 if d_type == 1:
@@ -66,47 +114,68 @@ def k_nn(info,k,d_type):
                     d_1 = euc_distance(centers[k_i], info[i])
                 
                 if d_1 < d_0:
+                    #print 'asignación ' + str(k_i)
                     assigns_1[i] = centers[k_i]
+                    #if i_general == 1:
+                        #print ' -------0'        
+                    #    print assigns_1 [i]
                 d_0 = d_1
-        assigns = assigns_1 # to compare the previous cluster
-        #compute the centers          
-        
-        center_build = assigns[0]
+
+
+
+        center_build = list(assigns_1[0])
+        center_com   = [[0 for j in range(len_atrib-1)] for iji in range(k)]
+        center_quantity = [0 for iji in range(k)]
         i_c = 0
         
+        
+        
+        
         for an in range(k):
-            center_com  = [ [0, 0, 0, 0]  for i in range(k)]
-            #print center_com
-            while (center_build == assigns[i_c]):
-                center_com[an][0] = center_com[an][0] + float(info[i_c][0])
-                center_com[an][1] = center_com[an][1] + float(info[i_c][1])
-                center_com[an][2] = center_com[an][2] + float(info[i_c][2])
-                center_com[an][3] = center_com[an][3] + float(info[i_c][3])
-                                
-                i_c = i_c + 1
-                
+            for i_c in range(len(assigns_1)):
+                if centers[an] == assigns_1[i_c]:
+                    center_quantity[an] = center_quantity[an] +1
+                    for ii in range(len_atrib-1):
+                        center_com[an][ii] = center_com[an][ii] + float(info[i_c][ii]) 
+        
+        
+        
+        for an in range(k):#cálculo por centro (promedios)
+            for ii in range(len_atrib-1):
+                if center_quantity[an] != 0:
+                    center_com[an][ii] = center_com[an][ii] / center_quantity[an]
+                else:
+                    center_com[an][ii] = center_com[an][ii] 
             
-            center_build = assigns[i_c]
-            
-            center_com[an][0] = center_com[an][0] / i_c
-            center_com[an][1] = center_com[an][1] / i_c
-            center_com[an][2] = center_com[an][2] / i_c
-            center_com[an][3] = center_com[an][3] / i_c
-            
-            centers[an][0] = str(center_com[an][0])
-            centers[an][1] = str(center_com[an][1])
-            centers[an][2] = str(center_com[an][2])
-            centers[an][3] = str(center_com[an][3])
+            for ii in range(len_atrib-1):
+                centers[an][ii] = str(center_com[an][ii])
+    
+    print centers
+    print_cluster(info, assigns_1, centers)
+    print 'total number of steps ' + str(i_general) + '\n'
 
-    #print_cluster(info, assigns, centers)
-
+    
     return centers
 
 
+#-----------------------------------------
 
-
+#Generate the 200 instances with normal probability distribution
+gaussian_i = gaussian_data(200)
+#Information accoriding to "DataIris.txt"
 data    = read_in_data("DataIris.txt",",")
-res_centers = k_nn(data,4,1)
+"""
+Execute the k_nn algorithm:
+k_nn(info,k,d_type)
+where:
+    info  -> instances 
+    k     -> number of clusters
+    d_type-> type of distance function;
+        1 -> new_Distance (distance created by the team)
+        2 -> euc_distance (euclidean distance)
+#
+"""
+res_centers = k_nn(gaussian_i,3,2)
 print res_centers
 
 
