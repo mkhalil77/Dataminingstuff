@@ -88,11 +88,12 @@ def purity_function(info, cluster, centers):
 #------------------------------------------------------------------------------
 #for the results
 def print_cluster(info, cluster,centers):
+    print '-------- Cluster --------'
     for i in range(len(info)):
         if len(cluster[i]) == 1:
-            print str(info[i][0]) + ' cluster ' + str(centers.index([cluster[i][0]]))
+            print str(info[i][0]) + ' || cluster || ' + str(centers.index([cluster[i][0]]))
         else:    
-            print info[i][4] + ' cluster '+ str(centers.index(cluster[i][0:4]))
+            print info[i][4] + ' || cluster || '+ str(centers.index(cluster[i][0:4]))
             
     return
     
@@ -100,7 +101,7 @@ def print_cluster(info, cluster,centers):
 
 #------------------------------------------------------------------------------
 #Knn algorithm
-def k_nn(info,k,d_type):
+def k_mean(info,k,d_type):
     #lets define the instances
 
     
@@ -191,16 +192,18 @@ gaussian_i = gaussian_data(200)
 data    = read_in_data("DataIris.txt",",")
 """
 Execute the k_nn algorithm:
-k_nn(info,k,d_type)
+k_mean(info,k,d_type)
 where:
-    info  -> instances 
+    info  -> instances
+        data       -> instances of the 'DataIris.txt' file
+        gaussian_i -> instances generated with the gaussian probability distribution function
     k     -> number of clusters
     d_type-> type of distance function;
         1 -> new_Distance (distance created by the team)
         2 -> euc_distance (euclidean distance)
-#
+
 """
-res_centers = k_nn(gaussian_i,3,2)
+res_centers = k_mean(gaussian_i,3,2)
 print '-------- Centers --------'
 print res_centers
 
